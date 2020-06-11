@@ -15,3 +15,4 @@ __description__  = 'Disease classification on different plants with using Machin
 
 
 from plant_disease_classification_pytorch import data_generator
+from plant_disease_classification_pytorch.dataset import Dataset
