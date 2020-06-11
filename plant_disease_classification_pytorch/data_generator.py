@@ -5,6 +5,8 @@ import glob
 import numpy as np
 
 from PIL import Image
+from sklearn.utils import shuffle
+from plant_disease_classification_pytorch.dataset import Dataset
 
 
 def load_train_data(train_path, image_size, classes):
@@ -39,3 +41,28 @@ def load_train_data(train_path, image_size, classes):
     img_names = np.array(img_names)
     class_array = np.array(class_array)
     return images, labels, img_names, class_array
+
+
+def read_train_sets(train_path, image_size, classes, validation_size):
+    dataset = Dataset()
+
+    images, labels, img_names, class_array = load_train_data(train_path, image_size, classes)
+    images, labels, img_names, class_array = shuffle(images, labels, img_names, class_array)
+
+    if isinstance(validation_size, float):
+        validation_size = int(validation_size * images.shape[0])
+
+    validation_images = images[:validation_size]
+    validation_labels = labels[:validation_size]
+    validation_img_names = img_names[:validation_size]
+    validation_cls = class_array[:validation_size]
+
+    train_images = images[validation_size:]
+    train_labels = labels[validation_size:]
+    train_img_names = img_names[validation_size:]
+    train_cls = class_array[validation_size:]
+
+    dataset.train = Dataset(train_images, train_labels, train_img_names, train_cls)
+    dataset.validation = Dataset(validation_images, validation_labels, validation_img_names, validation_cls)
+
+    return dataset

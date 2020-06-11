@@ -16,7 +16,7 @@ class Dataset(object):
         self._epochs_done = 0
         self._index_in_epoch = 0
         self.train = None
-        self.valid = None
+        self.validation = None
 
 
     @property
