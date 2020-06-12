@@ -14,10 +14,10 @@ class DataGeneratorTest(unittest.TestCase):
         training_set_path = os.path.join(parent_directory_path, 'datasets/train')
         classes = os.listdir(training_set_path)
         image_size = 128
-        dataset = data_generator.read_train_sets(training_set_path,
+        train_dataset, validation_dataset = data_generator.read_datasets(training_set_path,
             image_size, classes, 0.2)
-        self.assertEqual(dataset.train.images.shape[0], 17534)
-        self.assertEqual(dataset.validation.images.shape[0], 4383)
+        self.assertEqual(train_dataset.images.shape[0], 17534)
+        self.assertEqual(validation_dataset.images.shape[0], 4383)
 
 
     def main(self):
