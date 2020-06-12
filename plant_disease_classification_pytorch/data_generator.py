@@ -60,7 +60,36 @@ def read_datasets(train_path, image_size, classes, validation_size):
     train_img_names = img_names[validation_size:]
     train_cls = class_array[validation_size:]
 
-    train_dataset = PlantDataset(train_images, train_labels, train_img_names, train_cls)
-    validation_dataset = PlantDataset(validation_images, validation_labels, validation_img_names, validation_cls)
+    train_dataset = PlantDataset(train_images, train_labels,
+        train_img_names, train_cls)
+    validation_dataset = PlantDataset(validation_images, validation_labels,
+        validation_img_names, validation_cls)
 
     return train_dataset, validation_dataset
+
+
+def read_test_dataset(test_path, image_size):
+    images = np.empty((32388))
+    img_names = []
+
+    print('Going to read test images')
+    files = os.listdir(test_path)
+    count = 0
+    for f in files:
+        file_path = os.path.join(test_path, f)
+        image = Image.open(file_path)
+        image = image.resize((image_size, image_size))
+        pixels = np.array(image)
+        pixels = pixels.astype(np.float32)
+        pixels = np.multiply(pixels, 1.0 / 255.0)
+        # images.append(pixels)
+        np.append(images, pixels)
+        file_base = os.path.basename(file_path)
+        img_names.append(file_base)
+        count +=1
+        if count % 5000 == 0:
+            print(str.format('Read {0} test images', count))
+    print(str.format('Completed reading {0} images of test dataset', count))
+    img_names = np.array(img_names)
+    test_dataset = PlantDataset(images, None, img_names, None)
+    return test_dataset
