@@ -2,7 +2,6 @@
 
 import os
 import unittest
-import pytest
 
 from plant_disease_classification_pytorch import data_generator
 
