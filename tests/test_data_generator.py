@@ -16,8 +16,10 @@ class DataGeneratorTest(unittest.TestCase):
         classes = os.listdir(training_set_path)
         train_dataset, validation_dataset = data_generator.read_datasets(training_set_path,
             self.image_size, classes, 0.2)
-        print(train_dataset.images.shape)
         self.assertEqual(train_dataset.images.shape[0], 17534)
+        self.assertEqual(len(train_dataset.classes), 17534)
+        self.assertEqual(len(train_dataset.img_names), 17534)
+        self.assertEqual(len(train_dataset.classes), 17534)
         self.assertEqual(validation_dataset.images.shape[0], 4383)
 
 
@@ -30,6 +32,7 @@ class DataGeneratorTest(unittest.TestCase):
 
     def main(self):
         self.test_read_train_sets()
+        self.test_read_test_dataset()
 
 
 if __name__ == "__main__":
