@@ -1,15 +1,18 @@
 #!/usr/bin/env python
 
+import torch
+
 from torch.utils.data import Dataset
 
 
 class PlantDataset(Dataset):
 
-    def __init__(self, images, labels, img_names, classes):
+    def __init__(self, images, labels, img_names, classes, transform=None):
         self.images = images
         self.labels = labels
         self.img_names = img_names
         self.classes = classes
+        self.transform = transform
 
 
     def __len__(self):
@@ -17,4 +20,11 @@ class PlantDataset(Dataset):
 
 
     def __getitem__(self, idx):
-        return self.images[idx]
+        if torch.is_tensor(idx):
+            idx = idx.tolist()
+
+        image_data = self.images[idx]
+
+        if self.transform:
+            image_data = self.transform(image_data)
+        return image_data

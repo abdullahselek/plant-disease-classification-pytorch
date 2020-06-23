@@ -3,10 +3,16 @@
 import os
 import glob
 import numpy as np
+import torchvision.transforms as transforms
 
 from PIL import Image
 from sklearn.utils import shuffle
 from plant_disease_classification_pytorch.plant_dataset import PlantDataset
+
+
+transform = transforms.Compose(
+        [transforms.ToTensor(),
+         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
 
 def load_train_data(train_path, image_size, classes):
@@ -61,9 +67,9 @@ def read_datasets(train_path, image_size, classes, validation_size):
     train_cls = class_array[validation_size:]
 
     train_dataset = PlantDataset(train_images, train_labels,
-        train_img_names, train_cls)
+        train_img_names, train_cls, transform=transform)
     validation_dataset = PlantDataset(validation_images, validation_labels,
-        validation_img_names, validation_cls)
+        validation_img_names, validation_cls, transform=transform)
 
     return train_dataset, validation_dataset
 
@@ -91,5 +97,6 @@ def read_test_dataset(test_path, image_size):
             print(str.format('Read {0} test images', count))
     print(str.format('Completed reading {0} images of test dataset', count))
     img_names = np.array(img_names)
-    test_dataset = PlantDataset(images, None, img_names, None)
+
+    test_dataset = PlantDataset(images, None, img_names, None, transform=transform)
     return test_dataset
