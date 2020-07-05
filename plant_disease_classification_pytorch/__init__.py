@@ -18,3 +18,4 @@ from plant_disease_classification_pytorch import data_generator
 from plant_disease_classification_pytorch.dataset import Dataset
 from plant_disease_classification_pytorch.plant_dataset import PlantDataset
 from plant_disease_classification_pytorch import trainer
+from plant_disease_classification_pytorch.network import Net
