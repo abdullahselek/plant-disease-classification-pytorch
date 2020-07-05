@@ -10,6 +10,7 @@ import numpy as np
 from random import seed
 from random import randint
 from plant_disease_classification_pytorch import data_generator
+from plant_disease_classification_pytorch.network import Net
 
 
 parent_directory_path = os.path.dirname('.')
@@ -29,3 +30,6 @@ def create_dataloaders():
     testloader = torch.utils.data.DataLoader(test_dataset, batch_size=4,
                                             shuffle=False, num_workers=2)
     return trainloader, testloader
+
+
+net = Net()
