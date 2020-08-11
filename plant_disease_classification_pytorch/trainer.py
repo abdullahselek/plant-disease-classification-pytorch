@@ -25,17 +25,17 @@ image_size = 128
 def create_dataloaders():
     train_dataset, _ = data_generator.read_datasets(training_set_path,
         image_size, classes, 0.2)
-    test_dataset = data_generator.read_test_dataset(test_set_path, image_size)
+    # test_dataset = data_generator.read_test_dataset(test_set_path, image_size)
 
     trainloader = torch.utils.data.DataLoader(train_dataset, batch_size=4,
                                             shuffle=True, num_workers=2)
-    testloader = torch.utils.data.DataLoader(test_dataset, batch_size=4,
-                                            shuffle=False, num_workers=2)
-    return trainloader, testloader
+    # testloader = torch.utils.data.DataLoader(test_dataset, batch_size=4,
+    #                                         shuffle=False, num_workers=2)
+    return trainloader
 
 
 def train():
-    trainloader, _ = create_dataloaders()
+    trainloader = create_dataloaders()
 
     net = Net()
 
