@@ -31,6 +31,7 @@ def create_dataloaders():
                                             shuffle=True, num_workers=2)
     # testloader = torch.utils.data.DataLoader(test_dataset, batch_size=4,
     #                                         shuffle=False, num_workers=2)
+
     return trainloader
 
 
@@ -45,7 +46,8 @@ def train():
         running_loss = 0.0
         for i, data in enumerate(trainloader, 0):
             # get the inputs; data is a list of [inputs, labels]
-            inputs, labels = data
+            inputs = data[0]
+            labels = data[1]
 
             # zero the parameter gradients
             optimizer.zero_grad()
