@@ -23,7 +23,7 @@ image_size = 128
 
 
 def create_dataloaders():
-    train_dataset, validation_dataset = data_generator.read_datasets(training_set_path,
+    train_dataset, _ = data_generator.read_datasets(training_set_path,
         image_size, classes, 0.2)
     test_dataset = data_generator.read_test_dataset(test_set_path, image_size)
 
@@ -35,7 +35,7 @@ def create_dataloaders():
 
 
 def train():
-    trainloader, testloader = create_dataloaders()
+    trainloader, _ = create_dataloaders()
 
     net = Net()
 
