@@ -12,7 +12,7 @@ import numpy as np
 from random import seed
 from random import randint
 from plant_disease_classification_pytorch import data_generator
-from plant_disease_classification_pytorch.network import Net
+from plant_disease_classification_pytorch.network import CNN
 
 
 parent_directory_path = os.path.dirname('.')
@@ -38,7 +38,7 @@ def create_dataloaders():
 def train():
     trainloader = create_dataloaders()
 
-    net = Net()
+    net = CNN()
 
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
