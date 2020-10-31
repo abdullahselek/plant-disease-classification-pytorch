@@ -44,10 +44,14 @@ def train():
     optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
     for epoch in range(3):  # loop over the dataset multiple times
         running_loss = 0.0
-        for i, data in enumerate(trainloader, 0):
+        for i, data in enumerate(trainloader):
             # get the inputs; data is a list of [inputs, labels]
             inputs = data[0]
             labels = data[1]
+            print("input:")
+            print(inputs[0])
+            print("label:")
+            print(labels[0])
 
             # zero the parameter gradients
             optimizer.zero_grad()
