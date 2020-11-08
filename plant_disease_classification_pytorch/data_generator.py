@@ -14,6 +14,18 @@ transform = transforms.Compose(
         [transforms.ToTensor(),
          transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
 
+train_transform = transforms.Compose([transforms.ToPILImage(),
+                                      transforms.ToTensor(),
+                                      transforms.Normalize(0.5, 0.5)])
+
+test_transform = transforms.Compose([transforms.ToPILImage(),
+                                     transforms.ToTensor(),
+                                     transforms.Normalize(0.5, 0.5)])
+
+valid_transform = transforms.Compose([transforms.ToPILImage(),
+                                     transforms.ToTensor(),
+                                     transforms.Normalize(0.5, 0.5)])
+
 
 def load_train_data(train_path, image_size, classes):
     images = []
@@ -66,10 +78,10 @@ def read_datasets(train_path, image_size, classes, validation_size):
     train_img_names = img_names[validation_size:]
     train_cls = class_array[validation_size:]
 
-    train_dataset = PlantDataset(train_images, train_labels,
-        train_img_names, train_cls, transform=transform)
-    validation_dataset = PlantDataset(validation_images, validation_labels,
-        validation_img_names, validation_cls, transform=transform)
+    train_dataset = PlantDataset(images=train_images, labels=train_labels,
+        img_names=train_img_names, classes=train_cls, transform=train_transform)
+    validation_dataset = PlantDataset(images=validation_images, labels=validation_labels,
+        img_names=validation_img_names, classes=validation_cls, transform=valid_transform)
 
     return train_dataset, validation_dataset
 
@@ -98,5 +110,5 @@ def read_test_dataset(test_path, image_size):
     print(str.format('Completed reading {0} images of test dataset', count))
     img_names = np.array(img_names)
 
-    test_dataset = PlantDataset(images, None, img_names, None, transform=transform)
+    test_dataset = PlantDataset(images=images, labels=None, img_names=img_names, classes=None, transform=test_transform)
     return test_dataset
