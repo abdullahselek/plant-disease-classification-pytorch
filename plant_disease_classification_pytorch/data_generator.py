@@ -15,15 +15,15 @@ transform = transforms.Compose(
 )
 
 train_transform = transforms.Compose(
-    [transforms.ToPILImage(), transforms.ToTensor(), transforms.Normalize(0.5, 0.5)]
+    [transforms.ToTensor(), transforms.Normalize(0.5, 0.5)]
 )
 
 test_transform = transforms.Compose(
-    [transforms.ToPILImage(), transforms.ToTensor(), transforms.Normalize(0.5, 0.5)]
+    [transforms.ToTensor(), transforms.Normalize(0.5, 0.5)]
 )
 
 valid_transform = transforms.Compose(
-    [transforms.ToPILImage(), transforms.ToTensor(), transforms.Normalize(0.5, 0.5)]
+    [transforms.ToTensor(), transforms.Normalize(0.5, 0.5)]
 )
 
 

@@ -2,75 +2,116 @@
 
 import os
 import torch
-import torchvision
-import torchvision.transforms as transforms
 import torch.optim as optim
 import torch.nn as nn
-import matplotlib.pyplot as plt
-import numpy as np
 
-from random import seed
-from random import randint
+from torch.utils.data import DataLoader
 from plant_disease_classification_pytorch import data_generator
 from plant_disease_classification_pytorch.network import CNN
 
 
-parent_directory_path = os.path.dirname(".")
-training_set_path = os.path.join(parent_directory_path, "datasets/train")
-test_set_path = os.path.join(parent_directory_path, "datasets/test")
-classes = os.listdir(training_set_path)
-image_size = 128
+PARENT_DIRECTORY_PATH = os.path.dirname(".")
+TRAINING_SET_PATH = os.path.join(PARENT_DIRECTORY_PATH, "datasets/train")
+TEST_SET_PATH = os.path.join(PARENT_DIRECTORY_PATH, "datasets/test")
+CLASSES = os.listdir(TRAINING_SET_PATH)
+NUMBER_OF_CLASSES = len(CLASSES)
+IMAGE_SIZE = 128
+BATCH_SIZE = 25
+LEARNING_RATE = 0.001
+EPOCHS = 35
+
+# CPU or GPU
+DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 
 def create_dataloaders():
-    train_dataset, _ = data_generator.read_datasets(
-        training_set_path, image_size, classes, 0.2
+    train_dataset, validation_dataset = data_generator.read_datasets(
+        TRAINING_SET_PATH, IMAGE_SIZE, CLASSES, 0.2
     )
-    # test_dataset = data_generator.read_test_dataset(test_set_path, image_size)
+    test_dataset = data_generator.read_test_dataset(TEST_SET_PATH, IMAGE_SIZE)
 
-    trainloader = torch.utils.data.DataLoader(
-        train_dataset, batch_size=4, shuffle=True, num_workers=2
+    train_loader = DataLoader(
+        dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=0
     )
-    # testloader = torch.utils.data.DataLoader(test_dataset, batch_size=4,
-    #                                         shuffle=False, num_workers=2)
+    valid_loader = DataLoader(
+        dataset=validation_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=0
+    )
+    test_loader = DataLoader(
+        dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=0
+    )
 
-    return trainloader
+    return train_loader, valid_loader, test_loader
 
 
 def train():
-    trainloader = create_dataloaders()
+    train_loader, valid_loader, testloader = create_dataloaders()
 
-    net = CNN()
-
+    model = CNN().to(DEVICE)
+    print(model)
     criterion = nn.CrossEntropyLoss()
-    optimizer = optim.SGD(net.parameters(), lr=0.001, momentum=0.9)
-    for epoch in range(3):  # loop over the dataset multiple times
-        running_loss = 0.0
-        for i, data in enumerate(trainloader):
+    optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
+
+    train_losses = []
+    valid_losses = []
+
+    for epoch in range(1, EPOCHS + 1):
+        # keep track of training and validation loss
+        train_loss = 0.0
+        valid_loss = 0.0
+
+        # training the model
+        model.train()
+        # for data, target in train_loader:
+        for i, data in enumerate(train_loader):
             # get the inputs; data is a list of [inputs, labels]
             inputs = data[0]
-            labels = data[1]
-            print("input:")
-            print(inputs[0])
-            print("label:")
-            print(labels[0])
+            target = data[1]
+            # move tensors to GPU
+            data = data.to(DEVICE)
+            target = target.to(DEVICE)
 
-            # zero the parameter gradients
+            # clear the gradients of all optimized variables
             optimizer.zero_grad()
-
-            # forward + backward + optimize
-            outputs = net(inputs)
-            loss = criterion(outputs, labels)
+            # forward pass: compute predicted outputs by passing inputs to the model
+            output = model(data)
+            # calculate the batch loss
+            print("output shape:")
+            print(output.shape)
+            print("target shape:")
+            print(target.shape)
+            loss = criterion(output, target)
+            # backward pass: compute gradient of the loss wrt model parameters
             loss.backward()
+            # perform a ingle optimization step (parameter update)
             optimizer.step()
+            # update training loss
+            train_loss += loss.item() * data.size(0)
 
-            # print statistics
-            running_loss += loss.item()
-            if i % 2000 == 1999:  # print every 2000 mini-batches
-                print("[%d, %5d] loss: %.3f" % (epoch + 1, i + 1, running_loss / 2000))
-                running_loss = 0.0
+        # validate the model
+        model.eval()
+        for data, target in valid_loader:
 
-    print("Finished Training")
+            data = data.to(DEVICE)
+            target = target.to(DEVICE)
 
+            output = model(data)
+
+            loss = criterion(output, target)
+
+            # update average validation loss
+            valid_loss += loss.item() * data.size(0)
+
+        # calculate average losses
+        train_loss = train_loss / len(train_loader.sampler)
+        valid_loss = valid_loss / len(valid_loader.sampler)
+        train_losses.append(train_loss)
+        valid_losses.append(valid_loss)
+
+        # print training/validation statistics
+        print(
+            "Epoch: {} \tTraining Loss: {:.6f} \tValidation Loss: {:.6f}".format(
+                epoch, train_loss, valid_loss
+            )
+        )
 
 train()
