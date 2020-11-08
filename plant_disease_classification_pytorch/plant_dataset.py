@@ -6,7 +6,6 @@ from torch.utils.data import Dataset
 
 
 class PlantDataset(Dataset):
-
     def __init__(self, images, labels, img_names, classes, transform=None):
         self.images = images
         self.labels = labels
@@ -14,10 +13,8 @@ class PlantDataset(Dataset):
         self.classes = classes
         self.transform = transform
 
-
     def __len__(self):
         return len(self.images)
-
 
     def __getitem__(self, idx):
         if torch.is_tensor(idx):

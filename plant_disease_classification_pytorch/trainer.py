@@ -15,20 +15,22 @@ from plant_disease_classification_pytorch import data_generator
 from plant_disease_classification_pytorch.network import CNN
 
 
-parent_directory_path = os.path.dirname('.')
-training_set_path = os.path.join(parent_directory_path, 'datasets/train')
-test_set_path = os.path.join(parent_directory_path, 'datasets/test')
+parent_directory_path = os.path.dirname(".")
+training_set_path = os.path.join(parent_directory_path, "datasets/train")
+test_set_path = os.path.join(parent_directory_path, "datasets/test")
 classes = os.listdir(training_set_path)
 image_size = 128
 
 
 def create_dataloaders():
-    train_dataset, _ = data_generator.read_datasets(training_set_path,
-        image_size, classes, 0.2)
+    train_dataset, _ = data_generator.read_datasets(
+        training_set_path, image_size, classes, 0.2
+    )
     # test_dataset = data_generator.read_test_dataset(test_set_path, image_size)
 
-    trainloader = torch.utils.data.DataLoader(train_dataset, batch_size=4,
-                                            shuffle=True, num_workers=2)
+    trainloader = torch.utils.data.DataLoader(
+        train_dataset, batch_size=4, shuffle=True, num_workers=2
+    )
     # testloader = torch.utils.data.DataLoader(test_dataset, batch_size=4,
     #                                         shuffle=False, num_workers=2)
 
@@ -64,12 +66,11 @@ def train():
 
             # print statistics
             running_loss += loss.item()
-            if i % 2000 == 1999:    # print every 2000 mini-batches
-                print('[%d, %5d] loss: %.3f' %
-                    (epoch + 1, i + 1, running_loss / 2000))
+            if i % 2000 == 1999:  # print every 2000 mini-batches
+                print("[%d, %5d] loss: %.3f" % (epoch + 1, i + 1, running_loss / 2000))
                 running_loss = 0.0
 
-    print('Finished Training')
+    print("Finished Training")
 
 
 train()
