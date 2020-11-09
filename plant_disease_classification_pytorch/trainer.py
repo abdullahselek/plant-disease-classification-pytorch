@@ -6,15 +6,10 @@ import torch.optim as optim
 import torch.nn as nn
 
 from torch.utils.data import DataLoader
-from plant_disease_classification_pytorch import data_generator
+from plant_disease_classification_pytorch import data_generator, constant
 from plant_disease_classification_pytorch.network import CNN
 
 
-PARENT_DIRECTORY_PATH = os.path.dirname(".")
-TRAINING_SET_PATH = os.path.join(PARENT_DIRECTORY_PATH, "datasets/train")
-TEST_SET_PATH = os.path.join(PARENT_DIRECTORY_PATH, "datasets/test")
-CLASSES = os.listdir(TRAINING_SET_PATH)
-NUMBER_OF_CLASSES = len(CLASSES)
 IMAGE_SIZE = 128
 BATCH_SIZE = 25
 LEARNING_RATE = 0.001
@@ -26,9 +21,9 @@ DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 def create_dataloaders():
     train_dataset, validation_dataset = data_generator.read_datasets(
-        TRAINING_SET_PATH, IMAGE_SIZE, CLASSES, 0.2
+        constant.TRAINING_SET_PATH, IMAGE_SIZE, constant.CLASSES, 0.2
     )
-    test_dataset = data_generator.read_test_dataset(TEST_SET_PATH, IMAGE_SIZE)
+    test_dataset = data_generator.read_test_dataset(constant.TEST_SET_PATH, IMAGE_SIZE)
 
     train_loader = DataLoader(
         dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=0

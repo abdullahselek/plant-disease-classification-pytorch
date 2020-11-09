@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from plant_disease_classification_pytorch import trainer
+from plant_disease_classification_pytorch import trainer, constant
 
 
 class CNN(nn.Module):
@@ -14,7 +14,7 @@ class CNN(nn.Module):
         self.conv2 = nn.Conv2d(in_channels=10, out_channels=20, kernel_size=3)
         self.conv2_drop = nn.Dropout2d()
         self.fc1 = nn.Linear(20 * 30 * 30, 1024)
-        self.fc2 = nn.Linear(1024, trainer.NUMBER_OF_CLASSES)
+        self.fc2 = nn.Linear(1024, constant.NUMBER_OF_CLASSES)
 
     def forward(self, x):
         x = F.relu(F.max_pool2d(self.conv1(x), 2))
