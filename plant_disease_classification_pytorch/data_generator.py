@@ -6,7 +6,7 @@ import numpy as np
 import torchvision.transforms as transforms
 
 from PIL import Image
-from sklearn.utils import shuffle
+from sklearn.model_selection import train_test_split
 from plant_disease_classification_pytorch.plant_dataset import PlantDataset
 
 
@@ -35,11 +35,11 @@ def load_train_data(train_path, image_size, classes):
     extension_list = ("*.jpg", "*.JPG")
 
     print("Going to read training images")
-    for fields in classes:
-        index = classes.index(fields)
-        print("Now going to read {} files (Index: {})".format(fields, index))
+    for image_class in classes:
+        index = classes.index(image_class)
+        print("Now going to read {} files (Index: {})".format(image_class, index))
         for extension in extension_list:
-            path = os.path.join(train_path, fields, extension)
+            path = os.path.join(train_path, image_class, extension)
             files = glob.glob(path)
             for file_path in files:
                 image = Image.open(file_path)
@@ -53,7 +53,7 @@ def load_train_data(train_path, image_size, classes):
                 labels.append(label)
                 file_base = os.path.basename(file_path)
                 img_names.append(file_base)
-                class_array.append(fields)
+                class_array.append(image_class)
     images = np.array(images)
     labels = np.array(labels)
     img_names = np.array(img_names)
@@ -61,24 +61,15 @@ def load_train_data(train_path, image_size, classes):
     return images, labels, img_names, class_array
 
 
-def read_datasets(train_path, image_size, classes, validation_size):
+def read_datasets(train_path, image_size, classes, test_size):
     images, labels, img_names, class_array = load_train_data(
         train_path, image_size, classes
     )
-    # images, labels, img_names, class_array = shuffle(images, labels, img_names, class_array)
 
-    if isinstance(validation_size, float):
-        validation_size = int(validation_size * images.shape[0])
-
-    validation_images = images[:validation_size]
-    validation_labels = labels[:validation_size]
-    validation_img_names = img_names[:validation_size]
-    validation_cls = class_array[:validation_size]
-
-    train_images = images[validation_size:]
-    train_labels = labels[validation_size:]
-    train_img_names = img_names[validation_size:]
-    train_cls = class_array[validation_size:]
+    train_images, validation_images = train_test_split(images, test_size=test_size)
+    train_labels, validation_labels = train_test_split(labels, test_size=test_size)
+    train_img_names, validation_img_names = train_test_split(img_names, test_size=test_size)
+    train_cls, validation_cls = train_test_split(class_array, test_size=test_size)
 
     train_dataset = PlantDataset(
         images=train_images,
