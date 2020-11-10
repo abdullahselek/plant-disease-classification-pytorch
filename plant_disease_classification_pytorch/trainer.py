@@ -21,7 +21,7 @@ DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 def create_dataloaders():
     train_dataset, validation_dataset = data_generator.read_datasets(
-        constant.TRAINING_SET_PATH, IMAGE_SIZE, constant.CLASSES, 0.2
+        constant.TRAINING_SET_PATH, IMAGE_SIZE, constant.classes(), 0.2
     )
     test_dataset = data_generator.read_test_dataset(constant.TEST_SET_PATH, IMAGE_SIZE)
 
