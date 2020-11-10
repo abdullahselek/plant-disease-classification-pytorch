@@ -70,10 +70,7 @@ def train():
             # forward pass: compute predicted outputs by passing inputs to the model
             output = model(data)
             # calculate the batch loss
-            print("output shape:")
-            print(output.shape)
-            print("target shape:")
-            print(target.shape)
+            target = torch.max(target, 1)[1]
             loss = criterion(output, target)
             # backward pass: compute gradient of the loss wrt model parameters
             loss.backward()
@@ -91,6 +88,7 @@ def train():
 
             output = model(data)
 
+            target = torch.max(target, 1)[1]
             loss = criterion(output, target)
 
             # update average validation loss
