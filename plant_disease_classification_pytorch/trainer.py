@@ -107,4 +107,22 @@ def train():
             )
         )
 
+    # test the model
+    model.eval()  # it disables dropout
+    with torch.no_grad():
+        correct = 0
+        total = 0
+        for images, labels in valid_loader:
+            images = images.to(DEVICE)
+            labels = labels.to(DEVICE)
+            outputs = model(images)
+            _, predicted = torch.max(outputs.data, 1)
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
+
+        print('Test Accuracy of the model: {} %'.format(100 * correct / total))
+
+    # save
+    torch.save(model.state_dict(), 'model.ckpt')
+
 train()
