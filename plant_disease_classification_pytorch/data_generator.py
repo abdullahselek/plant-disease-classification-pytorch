@@ -55,6 +55,7 @@ def load_train_data(train_path, image_size, classes):
                 img_names.append(file_base)
                 class_array.append(image_class)
     images = np.array(images)
+    print(str.format("Completed reading {0} images of training dataset", len(images)))
     labels = np.array(labels)
     img_names = np.array(img_names)
     class_array = np.array(class_array)
