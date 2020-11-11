@@ -17,13 +17,13 @@ EPOCHS = 35
 
 # CPU or GPU
 DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
+print(DEVICE)
 
 def create_dataloaders():
     train_dataset, validation_dataset = data_generator.read_datasets(
         constant.TRAINING_SET_PATH, IMAGE_SIZE, constant.classes(), 0.2
     )
-    test_dataset = data_generator.read_test_dataset(constant.TEST_SET_PATH, IMAGE_SIZE)
+    # test_dataset = data_generator.read_test_dataset(constant.TEST_SET_PATH, IMAGE_SIZE)
 
     train_loader = DataLoader(
         dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=0
@@ -31,15 +31,15 @@ def create_dataloaders():
     valid_loader = DataLoader(
         dataset=validation_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=0
     )
-    test_loader = DataLoader(
-        dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=0
-    )
+    # test_loader = DataLoader(
+    #     dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=0
+    # )
 
-    return train_loader, valid_loader, test_loader
+    return train_loader, valid_loader
 
 
 def train():
-    train_loader, valid_loader, test_loader = create_dataloaders()
+    train_loader, valid_loader = create_dataloaders()
 
     model = CNN().to(DEVICE)
     print(model)
