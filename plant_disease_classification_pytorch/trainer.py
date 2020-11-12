@@ -57,10 +57,6 @@ def train():
         # training the model
         model.train()
         for data, target in train_loader:
-        # for i, data in enumerate(train_loader):
-            # get the inputs; data is a list of [inputs, labels]
-            # inputs = data[0]
-            # target = data[1]
             # move tensors to GPU
             data = data.to(DEVICE)
             target = target.to(DEVICE)
@@ -115,8 +111,17 @@ def train():
         for images, labels in valid_loader:
             images = images.to(DEVICE)
             labels = labels.to(DEVICE)
+            print("images shape:")
+            print(images.shape)
+            print("labels shape:")
+            print(labels.shape)
             outputs = model(images)
+            print("outputs shape:")
+            print(outputs.shape)
+            target = torch.max(target, 1)[1]
             _, predicted = torch.max(outputs.data, 1)
+            print("predicted shape:")
+            print(predicted.shape)
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
 
