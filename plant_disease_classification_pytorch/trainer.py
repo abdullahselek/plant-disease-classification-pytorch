@@ -78,7 +78,6 @@ def train():
         # validate the model
         model.eval()
         for data, target in valid_loader:
-
             data = data.to(DEVICE)
             target = target.to(DEVICE)
 
@@ -111,19 +110,9 @@ def train():
         for images, labels in valid_loader:
             images = images.to(DEVICE)
             labels = labels.to(DEVICE)
-            print("images shape:")
-            print(images.shape)
-            print("labels shape:")
-            print(labels.shape)
             outputs = model(images)
-            print("outputs shape:")
-            print(outputs.shape)
-            target = torch.max(target, 1)[1]
-            _, predicted = torch.max(outputs.data, 1)
-            print("predicted shape:")
-            print(predicted.shape)
             total += labels.size(0)
-            correct += (predicted == labels).sum().item()
+            correct += (outputs == labels).sum().item()
 
         print('Test Accuracy of the model: {} %'.format(100 * correct / total))
 
