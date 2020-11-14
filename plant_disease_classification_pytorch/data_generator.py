@@ -91,7 +91,8 @@ def read_datasets(train_path, image_size, classes, test_size):
 
 
 def read_test_dataset(test_path, image_size):
-    images = np.empty((32388))
+    # images = np.empty((32388))
+    images = []
     img_names = []
 
     print("Going to read test images")
@@ -104,14 +105,16 @@ def read_test_dataset(test_path, image_size):
         pixels = np.array(image)
         pixels = pixels.astype(np.float32)
         pixels = np.multiply(pixels, 1.0 / 255.0)
-        # images.append(pixels)
-        np.append(images, pixels)
+        images.append(pixels)
+        # np.append(images, pixels)
         file_base = os.path.basename(file_path)
         img_names.append(file_base)
         count += 1
         if count % 5000 == 0:
             print(str.format("Read {0} test images", count))
     print(str.format("Completed reading {0} images of test dataset", count))
+
+    images = np.array(images)
     img_names = np.array(img_names)
 
     test_dataset = PlantDataset(
