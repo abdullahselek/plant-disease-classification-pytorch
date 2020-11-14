@@ -21,7 +21,8 @@ class PlantDataset(Dataset):
             idx = idx.tolist()
 
         image_data = self.images[idx]
-        label = self.labels[idx]
+        if self.labels:
+            label = self.labels[idx]
 
         if self.transform:
             image_data = self.transform(image_data)
