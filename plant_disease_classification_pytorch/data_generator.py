@@ -98,10 +98,10 @@ def read_test_dataset(test_path, image_size):
         file_path = os.path.join(test_path, f)
         image = Image.open(file_path)
         image = image.resize((image_size, image_size))
-        pixels = np.array(image)
-        pixels = pixels.astype(np.float32)
-        pixels = np.multiply(pixels, 1.0 / 255.0)
-        images.append(pixels)
+        images.append(image)
+        # pixels = np.array(image)
+        # pixels = pixels.astype(np.float32)
+        # pixels = np.multiply(pixels, 1.0 / 255.0)
         # np.append(images, pixels)
         file_base = os.path.basename(file_path)
         img_names.append(file_base)
@@ -110,7 +110,7 @@ def read_test_dataset(test_path, image_size):
             print(str.format("Read {0} test images", count))
     print(str.format("Completed reading {0} images of test dataset", count))
 
-    images = np.array(images)
+    # images = np.array(images)
     img_names = np.array(img_names)
 
     test_dataset = PlantDataset(
