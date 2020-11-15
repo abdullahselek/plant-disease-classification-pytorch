@@ -23,7 +23,7 @@ def create_dataloaders():
     train_dataset, validation_dataset = data_generator.read_datasets(
         constant.TRAINING_SET_PATH, IMAGE_SIZE, constant.classes(), 0.2
     )
-    # test_dataset = data_generator.read_test_dataset(constant.TEST_SET_PATH, IMAGE_SIZE)
+    test_dataset = data_generator.read_test_dataset(constant.TEST_SET_PATH, IMAGE_SIZE)
 
     train_loader = DataLoader(
         dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=True, num_workers=0
@@ -31,15 +31,32 @@ def create_dataloaders():
     valid_loader = DataLoader(
         dataset=validation_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=0
     )
-    # test_loader = DataLoader(
-    #     dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=0
-    # )
+    test_loader = DataLoader(
+        dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=False, num_workers=0
+    )
 
-    return train_loader, valid_loader
+    return train_loader, valid_loader, test_loader
+
+
+def check_accuracy(test_loader, model, device):    
+    correct = 0
+    total = 0
+    with torch.no_grad():
+        for data, label in test_loader:
+            data = data.to(device=device)
+            label = label.to(device=device)
+
+            outputs = model(data)
+            _, predicted = torch.max(outputs.data, 1)
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
+
+    print('Accuracy of the network on the 32388 test images: %d %%' % (
+        100 * correct / total))
 
 
 def train():
-    train_loader, valid_loader = create_dataloaders()
+    train_loader, valid_loader, test_loader = create_dataloaders()
 
     model = CNN().to(DEVICE)
     print(model)
@@ -103,18 +120,7 @@ def train():
         )
 
     # test the model
-    model.eval()  # it disables dropout
-    with torch.no_grad():
-        correct = 0
-        total = 0
-        for images, labels in valid_loader:
-            images = images.to(DEVICE)
-            labels = labels.to(DEVICE)
-            outputs = model(images)
-            total += labels.size(0)
-            correct += (outputs == labels).sum().item()
-
-        print('Test Accuracy of the model: {} %'.format(100 * correct / total))
+    check_accuracy(test_loader=test_loader, model=model, device=DEVICE)
 
     # save
     torch.save(model.state_dict(), 'model.ckpt')
