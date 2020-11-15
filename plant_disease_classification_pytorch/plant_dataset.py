@@ -21,7 +21,8 @@ class PlantDataset(Dataset):
             idx = idx.tolist()
 
         image_data = self.images[idx]
-        if self.labels:
+        label = None
+        if self.labels is not None:
             label = self.labels[idx]
 
         if self.transform:
