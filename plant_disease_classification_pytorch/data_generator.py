@@ -10,10 +10,6 @@ from sklearn.model_selection import train_test_split
 from plant_disease_classification_pytorch.plant_dataset import PlantDataset
 
 
-transform = transforms.Compose(
-    [transforms.ToTensor(), transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))]
-)
-
 train_transform = transforms.Compose(
     [transforms.ToTensor(), transforms.Normalize(0.5, 0.5)]
 )
