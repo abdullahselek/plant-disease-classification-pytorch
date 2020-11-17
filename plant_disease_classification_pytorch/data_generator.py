@@ -65,7 +65,9 @@ def read_datasets(train_path, image_size, classes, test_size):
 
     train_images, validation_images = train_test_split(images, test_size=test_size)
     train_labels, validation_labels = train_test_split(labels, test_size=test_size)
-    train_img_names, validation_img_names = train_test_split(img_names, test_size=test_size)
+    train_img_names, validation_img_names = train_test_split(
+        img_names, test_size=test_size
+    )
     train_cls, validation_cls = train_test_split(class_array, test_size=test_size)
 
     train_dataset = PlantDataset(

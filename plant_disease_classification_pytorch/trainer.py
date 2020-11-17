@@ -19,6 +19,7 @@ EPOCHS = 35
 DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print(DEVICE)
 
+
 def create_dataloaders():
     train_dataset, validation_dataset = data_generator.read_datasets(
         constant.TRAINING_SET_PATH, IMAGE_SIZE, constant.classes(), 0.2
@@ -38,7 +39,7 @@ def create_dataloaders():
     return train_loader, valid_loader
 
 
-def check_accuracy(valid_loader, model, device):    
+def check_accuracy(valid_loader, model, device):
     correct = 0
     total = 0
     with torch.no_grad():
@@ -51,8 +52,10 @@ def check_accuracy(valid_loader, model, device):
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
 
-    print('Accuracy of the network on the %d test images: %d %%' % (len(valid_loader.dataset),
-        100 * correct / total))
+    print(
+        "Accuracy of the network on the %d test images: %d %%"
+        % (len(valid_loader.dataset), 100 * correct / total)
+    )
 
 
 def train():
@@ -123,6 +126,7 @@ def train():
     check_accuracy(valid_loader=valid_loader, model=model, device=DEVICE)
 
     # save
-    torch.save(model.state_dict(), 'model.ckpt')
+    torch.save(model.state_dict(), "model.ckpt")
+
 
 train()
