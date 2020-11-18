@@ -43,9 +43,9 @@ def check_accuracy(valid_loader, model, device):
     correct = 0
     total = 0
     with torch.no_grad():
-        for data, label in valid_loader:
+        for data, labels in valid_loader:
             data = data.to(device=device)
-            label = label.to(device=device)
+            labels = labels.to(device=device)
 
             outputs = model(data)
             _, predicted = torch.max(outputs.data, 0)
@@ -59,7 +59,7 @@ def check_accuracy(valid_loader, model, device):
 
 
 def train():
-    train_loader, valid_loader, test_loader = create_dataloaders()
+    train_loader, valid_loader = create_dataloaders()
 
     model = CNN().to(DEVICE)
     print(model)
