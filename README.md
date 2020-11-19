@@ -25,7 +25,20 @@ TBD
 
 ## Installation
 
-TBD
+The code is hosted at https://github.com/abdullahselek/plant-disease-classification-pytorch
+
+Check out the latest development version anonymously with
+
+    git clone git://github.com/abdullahselek/plant-disease-classification-pytorch.git
+    cd plant-disease-classification-pytorch
+
+To install dependencies
+
+    pip3 install -r requirements.txt
+
+To install the plant-disease-classification-pytorch module
+
+    pip3 install -e .
 
 ## Running
 
