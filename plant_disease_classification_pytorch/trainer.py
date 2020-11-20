@@ -127,6 +127,3 @@ def train():
 
     # save
     torch.save(model.state_dict(), "model.ckpt")
-
-
-train()
