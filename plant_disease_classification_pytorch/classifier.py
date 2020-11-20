@@ -13,10 +13,11 @@ DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 
 class Classifier(object):
-
     def __init__(self, model_path: str = None):
         self.img_size = 128
-        self.tranform = transforms.Compose([transforms.Resize((self.img_size, self.img_size)), transforms.ToTensor()])
+        self.tranform = transforms.Compose(
+            [transforms.Resize((self.img_size, self.img_size)), transforms.ToTensor()]
+        )
         if model_path:
             self.__load_model(path=model_path)
         else:
