@@ -7,6 +7,21 @@ from torch.utils.data import Dataset
 
 class PlantDataset(Dataset):
     def __init__(self, images, labels, img_names, classes, transform=None):
+        """Returns a PlantDataset instance.
+        Args:
+          images (np.array):
+            Array of data images.
+          labels (np.array):
+            Array of data labels.
+          img_names (np.array):
+            Array of names of images.
+          classes (np.array):
+            Array of image classes.
+          transform (transforms):
+            Transform used in normalization and creating tensor.
+        Returns:
+          PlantDataset"""
+
         self.images = images
         self.labels = labels
         self.img_names = img_names

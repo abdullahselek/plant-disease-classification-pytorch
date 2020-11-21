@@ -8,6 +8,8 @@ from plant_disease_classification_pytorch import trainer, constant
 
 
 class CNN(nn.Module):
+    """Convolutional Neural Network which does the raining."""
+
     def __init__(self):
         super(CNN, self).__init__()
         self.conv1 = nn.Conv2d(in_channels=3, out_channels=10, kernel_size=3)

@@ -9,6 +9,7 @@ from torch.utils.data import DataLoader
 from plant_disease_classification_pytorch import data_generator, constant
 from plant_disease_classification_pytorch.network import CNN
 
+"""Module that does the model traning."""
 
 IMAGE_SIZE = 128
 BATCH_SIZE = 25
