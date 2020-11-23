@@ -44,7 +44,30 @@ To install the plant-disease-classification-pytorch module
 
 ## Running
 
-TBD
+After installing module to your computer you can run commands below.
+
+```
+Disease classification on different plants with using Machine Learning and
+Convolutional Neural Networks.
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -t TRAIN, --train TRAIN
+                        Number of epochs for training
+  -m MODEL, --model MODEL
+                        Path of the model will be used in classification
+  -i IMAGE, --image IMAGE
+                        Path of the image file you want to classify
+```
+
+Traing your model with 35 epochs
+
+    python -m plant_disease_classification_pytorch -t 35
+
+Classify your image with trained model
+
+    python -m plant_disease_classification_pytorch -m "model.ckpt" -i datasets/test/0a1e21dd9c2ddaf1ce1db1706d411649.jpg
+
 
 ## License
 
