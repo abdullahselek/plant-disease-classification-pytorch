@@ -6,7 +6,6 @@ Disease classification on different plants with using Machine Learning and Convo
 
   - [Introduction](#introduction)
   - [Datasets](#datasets)
-  - [How it works](#how-it-works)
   - [Installation](#installation)
   - [Running](#running)
   - [License](#license)
@@ -20,10 +19,6 @@ The project involves the use of self-designed image processing algorithms and te
 ## Datasets
 
 Datasets are available at [here](https://github.com/abdullahselek/plant-disease-classification-pytorch/tree/master/datasets) and in another [repo](https://github.com/abdullahselek/plant-disease-classification-datasets) as compressed file.
-
-## How it works
-
-TBD
 
 ## Installation
 
