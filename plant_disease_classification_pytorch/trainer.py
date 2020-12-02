@@ -127,4 +127,4 @@ def train():
     check_accuracy(valid_loader=valid_loader, model=model, device=DEVICE)
 
     # save
-    torch.save(model.state_dict(), "model.ckpt")
+    torch.save(model.state_dict(), "model.pt")
