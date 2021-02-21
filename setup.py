@@ -42,8 +42,6 @@ setup(
     platforms=['Any'],
     python_requires=">=3.5",
     install_requires=requirements,
-    setup_requires=['pytest-runner'],
-    tests_require=['pytest'],
     keywords='plant disease classification, machine learning, convolutional neural network, pytorch',
     classifiers=[
         'Intended Audience :: Developers',
